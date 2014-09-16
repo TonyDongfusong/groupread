@@ -1,0 +1,3 @@
+rvm use 2.1
+rvm gemset use --create groupread
+
