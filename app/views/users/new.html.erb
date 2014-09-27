@@ -1,15 +1,4 @@
 <%= form_for(@user) do |f|%>
-	<div class="field">
-	  <%= f.label :email, "邮箱"%>
-	  <%= f.text_field :email %>
-	</div>
-	<div class="field">
-	  <%= f.label :password, "密码"%>
-	  <%= f.password_field :password %>
-	</div>
-	<div class="field">
-	  <%= f.label :repeated_password, "再次输入密码"%>
-	  <%= f.password_field :repeated_password %>
-	</div>
+	<%= render partial: "info_form", locals: {f: f} %>
 	<%= submit_tag "立即注册" %>
 <% end %>

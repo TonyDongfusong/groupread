@@ -1,16 +1,15 @@
 class SessionController < ApplicationController
 	def new
-    if session[:logged_in]
+    unless session[:current_user].nil?
       redirect_to root_path
     end
     @user = User.new
 	end
 
 	def create
-    user_param = params[:user]
-    p user_param
-    if User.find_by_email(user_param[:email]).password == user_param[:password]
-      session[:logged_in] = true
+    user = User.find_by_email(params[:user][:email])
+    if user.password == params[:user][:password]
+      session[:current_user] = user.id
       redirect_to root_path
     else
       render :new
@@ -18,7 +17,7 @@ class SessionController < ApplicationController
   end
 
   def destroy
-    session[:logged_in] = false
+    session[:current_user] = nil
     redirect_to root_path
   end
 end

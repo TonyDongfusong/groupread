@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post "/logout" => "session#destroy", as: :logout
   post '/register' => "session#create", as: :register
   get '/register' => "users#new", as: :register_page
+  get '/setting' => "users#edit", as: :setting
+  get '/oauth_callback' => "users#oauth_callback"
   resources :users
 
   # Example of regular route:

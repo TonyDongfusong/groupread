@@ -11,16 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140927021113) do
+ActiveRecord::Schema.define(version: 20140927051459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "douban_auth_infos", force: true do |t|
+    t.string   "access_token"
+    t.string   "douban_user_name"
+    t.string   "douban_user_id"
+    t.integer  "expires_in"
+    t.string   "refresh_token"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "name"
     t.string   "email"
     t.string   "password"
     t.string   "douban_id"
+    t.string   "douban_email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  access_token: 
+  douban_user_name: 
+  douban_user_id: 
+  expires_in: 
+  refresh_token: MyString
+
+two:
+  access_token: 
+  douban_user_name: 
+  douban_user_id: 
+  expires_in: 
+  refresh_token: MyString

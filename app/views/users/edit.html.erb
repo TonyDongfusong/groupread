@@ -1,0 +1,11 @@
+<%= form_for(@user) do |f|%>
+	<%= render partial: "info_form", locals: {f: f} %>
+	<% if @user.douban_auth_info.nil? %>
+		<div>你还没有绑定豆瓣账号，请先点击右边的图标绑定</div>
+	<% else%>
+		<div>你已经绑定了豆瓣账号：<%= @user.douban_auth_info.douban_user_name %></div>
+		<div>可以点击右边的图标绑定其他的账号</div>
+	<% end%>
+	<a href="<%= douban_oauth_url %>"><img src="/assets/favicon_48x48.png"></a>
+	<%= submit_tag "保存" %>
+<% end %>
