@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/setting' => "users#edit", as: :setting
   get '/oauth_callback' => "users#oauth_callback"
   resources :users
+  resources :groups
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

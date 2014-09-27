@@ -9,5 +9,6 @@ class WelcomeController < ApplicationController
       redirect_to setting_path
       return
     end
+    @groups = Group.all
 	end
 end

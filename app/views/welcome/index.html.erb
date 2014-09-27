@@ -5,6 +5,18 @@
   <% end %>
 </h1>
 
+<div>
+  <h2>所有的阅读组</h2>
+  <ul>
+	<% @groups.each do |group| %>
+		<li>
+		  <%= link_to group.name, group_path(group.id) %>
+		</li>
+	<% end %>
+  </ul>
+  <%= link_to "创建新的阅读组", new_group_path %>
+</div>
+
 <div class="container center">
 <h1 class="btn btn-lg btn-success">Welcome to Group Read</h1>
 </div>
