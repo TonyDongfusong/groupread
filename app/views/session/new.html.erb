@@ -1,0 +1,12 @@
+<%= form_tag("/register") do %>
+	<div class="field">
+	  <%= label_tag :email, "邮箱"%>
+	  <%= text_field_tag "user[email]" %>
+	</div>
+	<div class="field">
+	  <%= label_tag :password, "密码"%>
+	  <%= password_field_tag "user[password]" %>
+	</div>
+	<%= submit_tag "登陆" %>
+<% end %>
+<%= link_to "点击注册", register_page_path %>
