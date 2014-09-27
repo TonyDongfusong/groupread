@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'welcome#index'
   get "/login" => "session#new", as: :login
+  post "/login" => "session#create"
   post "/logout" => "session#destroy", as: :logout
-  post '/register' => "session#create", as: :register
+  post '/register' => "users#create"
   get '/register' => "users#new", as: :register_page
   get '/setting' => "users#edit", as: :setting
   get '/oauth_callback' => "users#oauth_callback"

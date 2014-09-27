@@ -4,7 +4,7 @@ class DoubanClient
   @@base_uri = 'https://www.douban.com'
   @@api_key = "0e26ec484bf14ac42a74c4d8e3d3e04c"
   @@secret = "cd25719372221342"
-  @@callback_url = "http://localhost:3000/oauth_callback"
+  @@callback_url = $callback_url
 
   def self.oauth_url
     "https://www.douban.com/service/auth2/auth?client_id=#{@@api_key}\
