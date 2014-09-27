@@ -32,8 +32,6 @@ class GroupsController < ApplicationController
     end
     .sort_by{|item| item[:read_num]}
     .reverse
-
-    p @book_infos[0]
   end
 
   # GET /groups/new

@@ -1,6 +1,5 @@
 class ReadingStatusAnalyzer
   def statistic_by_user_ids(user_infos)
-    p user_infos
     all_user_book_info = user_infos.map do |user_info|
       ::Thread.new do
         DoubanClient.reading_list_for_user(user_info[:douban_id]).map do |book|
@@ -30,20 +29,22 @@ class ReadingStatusAnalyzer
     #    "user_id": "33388491"
     #}
     items = []
-    all_user_book_info.group_by { |user_book| user_book["book_id"] }.each_pair do |book_id, user_books|
-      items << {
-          book_id: book_id,
-          title: user_books[0]["book"]["title"],
-          read_num: user_books.size,
-          book_url: user_books[0]["book"]["alt"],
-          read_people: user_books.map do |user_book|
-            {
-                name: user_book[:douban_name],
-                douban_link: "http://book.douban.com/people/#{user_books[0]["user_id"]}/",
-                douban_id: user_books[0]["user_id"]
-            }
-          end
-      }
+    unless all_user_book_info.nil?
+      all_user_book_info.group_by { |user_book| user_book["book_id"] }.each_pair do |book_id, user_books|
+        items << {
+            book_id: book_id,
+            title: user_books[0]["book"]["title"],
+            read_num: user_books.size,
+            book_url: user_books[0]["book"]["alt"],
+            read_people: user_books.map do |user_book|
+              {
+                  name: user_book[:douban_name],
+                  douban_link: "http://book.douban.com/people/#{user_books[0]["user_id"]}/",
+                  douban_id: user_books[0]["user_id"]
+              }
+            end
+        }
+      end
     end
     items
   end
