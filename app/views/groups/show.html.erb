@@ -1,4 +1,23 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+<div class="field">
+  组名：<%= @group.name %>
+</div>
+<div class="field">
+  描述：<%= @group.description%>
+</div>
+
+<%= link_to 'Edit', edit_group_path(@group) %>
+
+<% if @current_user_in_group  %>
+	<div>你已经加入该组，也许你想要</div>
+	<%= form_tag "/leave_group" do %>
+		<input name="id" value="<%= @group.id %>" hidden="hidden">
+		<%= submit_tag "退出" %>
+	<% end %>
+<% else %>
+	<%= form_tag "/join_group" do %>
+		<input name="id" value="<%= @group.id %>" hidden="hidden">
+		<%= submit_tag "加入" %>
+	<% end %>
+<% end %>

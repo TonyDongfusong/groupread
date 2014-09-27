@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   get '/register' => "users#new", as: :register_page
   get '/setting' => "users#edit", as: :setting
   get '/oauth_callback' => "users#oauth_callback"
+  post '/join_group' => 'groups#join'
+  post '/leave_group' => 'groups#leave'
+
   resources :users
   resources :groups
 

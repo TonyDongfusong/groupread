@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :leave]
 
   # GET /groups
   # GET /groups.json
@@ -10,6 +10,9 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
+    @current_user_in_group = @group.users.any? do |user|
+      user.id == current_user.id
+    end
   end
 
   # GET /groups/new
@@ -59,6 +62,19 @@ class GroupsController < ApplicationController
       format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def join
+    @group.users << current_user
+    current_user.groups << @group
+    @group.save
+    current_user.save
+    redirect_to root_path
+  end
+
+  def leave
+    @group.users.delete(current_user.id)
+    redirect_to root_path
   end
 
   private

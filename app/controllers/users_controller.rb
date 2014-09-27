@@ -23,7 +23,6 @@ class UsersController < ApplicationController
     unless @user.douban_auth_info.nil?
       @user.douban_auth_info.update_attributes(auth_rsp)
     else
-      @user.douban_auth_info.destroy
       @user.douban_auth_info = DoubanAuthInfo.create(auth_rsp)
       @user.save
     end

@@ -10,5 +10,8 @@ class WelcomeController < ApplicationController
       return
     end
     @groups = Group.all
+    @joint_groups = @groups.select do |group|
+      group.contain_user(current_user)
+    end
 	end
 end
