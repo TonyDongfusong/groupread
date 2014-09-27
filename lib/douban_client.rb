@@ -16,5 +16,10 @@ class DoubanClient
 &grant_type=authorization_code&redirect_uri=#{@@callback_url}&code=#{code}")
     JSON.parse(response.body)
   end
+
+  def self.reading_list_for_user(user_id)
+    response = HTTParty.get("https://api.douban.com/v2/book/user/#{user_id}/collections")
+    JSON.parse(response.body)["collections"]
+  end
 end
 

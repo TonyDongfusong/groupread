@@ -1,3 +1,5 @@
+require 'reading_status_analyzer'
+
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :leave]
 
@@ -13,6 +15,25 @@ class GroupsController < ApplicationController
     @current_user_in_group = @group.users.any? do |user|
       user.id == current_user.id
     end
+    douban_related_user_infos = @group.users.map do |user|
+      {
+          douban_id: user.douban_auth_info.douban_user_id,
+          douban_name: user.douban_auth_info.douban_user_name
+      }
+    end
+    book_infos = ReadingStatusAnalyzer.new.statistic_by_user_ids(douban_related_user_infos)
+
+    @book_infos = book_infos.map do |book_info|
+      current_user_read_this_book = book_info[:read_people].any? do |read_person|
+        read_person[:douban_id] == current_user.douban_auth_info.douban_user_id
+      end
+
+      book_info.merge(i_read: current_user_read_this_book)
+    end
+    .sort_by{|item| item[:read_num]}
+    .reverse
+
+    p @book_infos[0]
   end
 
   # GET /groups/new
@@ -66,9 +87,7 @@ class GroupsController < ApplicationController
 
   def join
     @group.users << current_user
-    current_user.groups << @group
     @group.save
-    current_user.save
     redirect_to root_path
   end
 
