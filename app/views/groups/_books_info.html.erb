@@ -1,4 +1,4 @@
-<% book_infos.take(3).each do |book_info| %>
+<% book_infos.each do |book_info| %>
 	<div>
 	  <% if book_info[:i_read] %>
 		  <%= image_tag("read.jpeg", width: "20px", height: "20px") %>
@@ -6,7 +6,7 @@
 	  <a href="<%= book_info[:book_url] %>"><%= book_info[:title] %></a>
 	</div>
 	<div>
-	  <p>共有<%= book_info[:read_num] %>个人读过本书，他们是：</p>
+	  <p>共有<%= book_info[:read_num] %>个人(占团队成员的<%= book_info[:read_num].to_f * 100 / @group.users.size %>%)读过本书，他们是：</p>
 	  <ul>
 		<% book_info[:read_people].each do |person| %>
 			<a href="<%= person[:douban_link] %>"><%= person[:name] %></a>
