@@ -12,32 +12,31 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
-    @group = Group.includes(users: [:douban_auth_info, :books]).find(params[:id])
-    @current_user_in_group = @group.users.any? do |user|
-      user.id == current_user.id
+    @group = Group.includes(:users).find(params[:id])
+    @current_user_in_group = @group.users.include? current_user
+
+    if @current_user_in_group
+      books = Book.joins(read_records: {user: :groups})
+                   .where(groups: {id: @group.id}, read_records:{status: "read"})
+                   .distinct
+
+      @book_infos = books.map do |book|
+          {
+            i_read: book.read_records.map(&:user).include?(current_user),
+            book_url: book.url,
+            title: book.title,
+            read_num: book.read_records.size,
+            read_people: book.read_records.map do |read_record|
+              {
+                  douban_link: "http://book.douban.com/people/#{read_record.user.douban_auth_info.douban_user_id}/",
+                  name: read_record.user.douban_auth_info.douban_user_name
+              }
+            end
+        }
+      end
+      .sort_by{|item| item[:read_num]}
+      .reverse
     end
-
-    books = @group.users.inject([]) do |books, user|
-      books + user.books
-    end.uniq
-
-
-    @book_infos = books.map do |book|
-        {
-          i_read: book.users.include?(current_user),
-          book_url: book.url,
-          title: book.title,
-          read_num: book.users.size,
-          read_people: book.users.map do |user|
-            {
-                douban_link: "http://book.douban.com/people/#{user.douban_auth_info.douban_user_id}/",
-                name: user.douban_auth_info.douban_user_name
-            }
-          end
-      }
-    end
-    .sort_by{|item| item[:read_num]}
-    .reverse
   end
 
   # GET /groups/new

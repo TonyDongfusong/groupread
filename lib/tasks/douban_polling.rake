@@ -9,16 +9,24 @@ def poll_from_douban_and_fill_in_db(user, douban_id)
     book = Book.find_by_book_id(raw_book["book_id"].to_i)
     if book.nil?
       book = Book.create({
-                    title: raw_book["book"]["title"],
-                    image: raw_book["book"]["image"],
-                    url: raw_book["book"]["alt"],
-                    book_id: raw_book[:book_id].to_i
+                        title: raw_book["book"]["title"],
+                        image: raw_book["book"]["image"],
+                        url: raw_book["book"]["alt"],
+                        book_id: raw_book["book_id"].to_i
+                        })
+    end
+
+    read_record = ReadRecord.find_by_book_id_and_user_id(book.id, user.id)
+    if read_record.nil?
+      read_record = ReadRecord.create({
+                    status: raw_book["status"],
+                    rating: (not raw_book["rating"].nil? and not raw_book["rating"]["value"].nil?) ? raw_book["rating"]["value"].to_i : 0
                   })
     end
-    unless book.users.include? user
-      book.users << user
-      book.save
-    end
+
+    read_record.user = user
+    read_record.book = book
+    read_record.save
   end
 end
 
