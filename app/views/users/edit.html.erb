@@ -1,3 +1,7 @@
+<% if flash[:authed] %>
+	<div>你已经成功的连接到了豆瓣，点击<%= link_to "这里", root_path %>开始使用本站的功能</div>
+<% end %>
+
 <%= form_for(@user) do |f|%>
 	<%= render partial: "info_form", locals: {f: f} %>
 	<% if @user.douban_auth_info.nil? %>

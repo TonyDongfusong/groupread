@@ -26,6 +26,7 @@ class UsersController < ApplicationController
       @user.douban_auth_info = DoubanAuthInfo.create(auth_rsp)
       @user.save
     end
+    flash[:authed] = true
     redirect_to setting_path
   end
 end
