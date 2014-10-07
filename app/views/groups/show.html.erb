@@ -26,7 +26,7 @@
 <% @book_infos.each do |book_info|%>
 	<div>
 	  <% if book_info[:i_read] %>
-	  	<img src="/assets/read.jpeg" width="20px" height="20px">
+		<%= image_tag("read.jpeg", width: "20px", height: "20px") %>
 	  <% end %>
 	  <a href="<%= book_info[:book_url] %>"><%= book_info[:title] %></a>
 	</div>
