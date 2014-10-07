@@ -1,12 +1,13 @@
 class ReadingStatusAnalyzer
-  def statistic_by_user_ids(user_infos)
-    all_user_book_info = user_infos.map do |user_info|
+  def statistic_by_user_ids(douban_ids)
+    all_user_book_info = douban_ids.map do |douban_id|
       ::Thread.new do
-        DoubanClient.reading_list_for_user(user_info[:douban_id]).map do |book|
-          book.merge(douban_name: user_info[:douban_name])
-        end
+        {
+            douban_id: douban_id,
+            books: DoubanClient.reading_list_for_user(douban_id)
+        }
       end
-    end.map(&:value).reduce(&:+)
+    end.map(&:value)
 
     #{
     #    "book": Book,

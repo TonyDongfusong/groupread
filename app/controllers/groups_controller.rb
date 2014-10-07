@@ -12,23 +12,29 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
+    @group = Group.includes(users: [:douban_auth_info, :books]).find(params[:id])
     @current_user_in_group = @group.users.any? do |user|
       user.id == current_user.id
     end
-    douban_related_user_infos = @group.users.map do |user|
-      {
-          douban_id: user.douban_auth_info.douban_user_id,
-          douban_name: user.douban_auth_info.douban_user_name
+
+    books = @group.users.inject([]) do |books, user|
+      books + user.books
+    end.uniq
+
+
+    @book_infos = books.map do |book|
+        {
+          i_read: book.users.include?(current_user),
+          book_url: book.url,
+          title: book.title,
+          read_num: book.users.size,
+          read_people: book.users.map do |user|
+            {
+                douban_link: "http://book.douban.com/people/#{user.douban_auth_info.douban_user_id}/",
+                name: user.douban_auth_info.douban_user_name
+            }
+          end
       }
-    end
-    book_infos = ReadingStatusAnalyzer.new.statistic_by_user_ids(douban_related_user_infos)
-
-    @book_infos = book_infos.map do |book_info|
-      current_user_read_this_book = book_info[:read_people].any? do |read_person|
-        read_person[:douban_id] == current_user.douban_auth_info.douban_user_id
-      end
-
-      book_info.merge(i_read: current_user_read_this_book)
     end
     .sort_by{|item| item[:read_num]}
     .reverse

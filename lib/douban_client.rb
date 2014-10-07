@@ -17,8 +17,8 @@ class DoubanClient
     JSON.parse(response.body)
   end
 
-  def self.reading_list_for_user(user_id)
-    response = HTTParty.get("https://api.douban.com/v2/book/user/#{user_id}/collections")
+  def self.reading_list_for_user(douban_user_id)
+    response = HTTParty.get("https://api.douban.com/v2/book/user/#{douban_user_id}/collections")
     JSON.parse(response.body)["collections"]
   end
 end
