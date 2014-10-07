@@ -18,3 +18,7 @@
 .inline-form{
     display: inline;
 }
+
+.invisible {
+    display: none;
+}

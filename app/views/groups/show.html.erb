@@ -16,22 +16,15 @@
 		<%= submit_tag "退出" %>
 	<% end %>
 	<h1>组员在读的书（总人数<%= @group.users.size %>）</h1>
-	<% @book_infos.each do |book_info|%>
-		<div>
-		  <% if book_info[:i_read] %>
-			  <%= image_tag("read.jpeg", width: "20px", height: "20px") %>
-		  <% end %>
-		  <a href="<%= book_info[:book_url] %>"><%= book_info[:title] %></a>
+
+	<%= render partial: "books_info", locals: {book_infos: @book_infos.take(3)} %>
+
+	<% if @book_infos.size > 3 %>
+		<div><a class="show-all" id="show_more_toggle">显示全部</a></div>
+		<div id="more">
+		  <%= render partial: "books_info", locals: {book_infos: @book_infos.drop(3)} %>
 		</div>
-		<div>
-		  <p>共有<%= book_info[:read_num] %>个人读过本书，他们是：</p>
-		  <ul>
-			<% book_info[:read_people].each do |person| %>
-				<a href="<%= person[:douban_link] %>"><%= person[:name] %></a>
-			<% end%>
-		  </ul>
-		</div>
-	<% end%>
+	<% end %>
 <% else %>
 	<%= form_tag "/join_group" do %>
 		<input name="id" value="<%= @group.id %>" hidden="hidden">
