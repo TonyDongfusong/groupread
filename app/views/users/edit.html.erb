@@ -8,7 +8,7 @@
 	  <%= f.text_field :email, disabled: "disable" %>
 	</div>
 	<% if @user.douban_auth_info.nil? %>
-		<div>你还没有绑定豆瓣账号，请先点击右边的图标绑定</div>
+		<div>你还没有绑定豆瓣账号，请先点击右边的图标绑定<a href="<%= douban_oauth_url %>"><%= image_tag "favicon_48x48.png" %></a></div>
 	<% else%>
 		<div>你已经绑定了豆瓣账号：
 		  <%= link_to "#{@user.douban_auth_info.douban_user_name}",
