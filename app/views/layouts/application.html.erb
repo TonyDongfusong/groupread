@@ -16,7 +16,7 @@
 	<ul>
 	  <span class="right-nav">
 	  <% if current_user.nil? %>
-		  <span class="navbar-brand"><%= link_to "登陆", login_path, class: "btn btn-default navbar-btn fix-logout" %></span>
+		  <span class="navbar-brand"><%= link_to "登录", login_path, class: "btn btn-default navbar-btn fix-logout" %></span>
 	  <% else %>
 
 			  <span class="navbar-brand"><%= link_to "我的设置", setting_path %></span>

@@ -14,7 +14,12 @@ class DoubanClient
   def self.token_auth code
     response = HTTParty.post(@@base_uri + "/service/auth2/token?client_id=#{@@api_key}&client_secret=#{@@secret}\
 &grant_type=authorization_code&redirect_uri=#{@@callback_url}&code=#{code}")
-    JSON.parse(response.body)
+    return {status: response.code, message: response.message} if response.code != 200
+
+    {
+        status:response.code,
+        auth_info: JSON.parse(response.body)
+    }
   end
 
   def self.reading_list_for_user(douban_user_id)

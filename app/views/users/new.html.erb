@@ -1,3 +1,4 @@
+<p>补全您的信息，这样下次就可以直接通过下面的信息登陆本站了</p>
 <%= form_for(@user) do |f|%>
 	<%= render partial: "info_form", locals: {f: f} %>
 	<%= submit_tag "立即注册", class: "btn btn-primary" %>

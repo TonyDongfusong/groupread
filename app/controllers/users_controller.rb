@@ -1,7 +1,13 @@
 require 'douban_client'
 
 class UsersController < ApplicationController
+
+  skip_before_filter :create_user_if_needed, only: [:new, :create]
+
   def new
+    unless session[:need_create_new_user]
+      redirect_to root_path
+    end
     @user = User.new
   end
 
@@ -11,6 +17,13 @@ class UsersController < ApplicationController
       render :new
       return
     end
+    user.douban_auth_info = DoubanAuthInfo.find (session[:need_create_new_user]["auth_info_id"])
+    user.save
+
+    session[:current_user] = user.id
+    session[:need_create_new_user] = nil
+
+    redirect_to root_path
   end
 
   def edit
@@ -19,14 +32,19 @@ class UsersController < ApplicationController
 
   def oauth_callback
     auth_rsp = DoubanClient.token_auth(params[:code])
-    @user = current_user
-    unless @user.douban_auth_info.nil?
-      @user.douban_auth_info.update_attributes(auth_rsp)
-    else
-      @user.douban_auth_info = DoubanAuthInfo.create(auth_rsp)
-      @user.save
+    if auth_rsp[:status] != 200
+      @fails_rsp = auth_rsp
+      render "oauth_fail"
+      return
     end
-    flash[:authed] = true
-    redirect_to setting_path
+
+    douban_auth_info = DoubanAuthInfo.find_or_create_by(auth_rsp[:auth_info])
+    if douban_auth_info.user.nil?
+      session[:need_create_new_user] = {auth_info_id: douban_auth_info.id}
+      redirect_to new_user_path
+    else
+      session[:current_user] = douban_auth_info.user.id
+      redirect_to root_path
+    end
   end
 end
