@@ -1,22 +1,25 @@
-<div>
-  <h2>所有的阅读组</h2>
-  <ul>
-	<% @groups.each do |group| %>
-		<li>
-		  <%= link_to group.name, group_path(group.id) %>
-		</li>
-	<% end %>
-  </ul>
-  <%= link_to "创建新的阅读组", new_group_path %>
-</div>
+<div class="row">
+  <div class="col-xs-4">
+	<h4>所有的阅读组</h4>
+	<ul class="list-unstyled list">
+	  <% @groups.each do |group| %>
+		  <li>
+			<%= link_to group.name, group_path(group.id) %>
+		  </li>
+	  <% end %>
+	</ul>
+	<%= link_to ">创建新的阅读组", new_group_path %>
+  </div>
 
-<div>
-  <h2>你已经加入的阅读组</h2>
-  <ul>
-	<% @joint_groups.each do |group| %>
-		<li>
-		  <%= link_to group.name, group_path(group.id) %>
-		</li>
-	<% end %>
-  </ul>
+  <div class="col-xs-4 list">
+	<h4>你已经加入的阅读组</h4>
+	<ul class="list-unstyled">
+	  <% @joint_groups.each do |group| %>
+		  <li>
+			<%= link_to group.name, group_path(group.id) %>
+		  </li>
+	  <% end %>
+	</ul>
+  </div>
+  <div class="col-xs-2"></div>
 </div>

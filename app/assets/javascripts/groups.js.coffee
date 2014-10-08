@@ -2,13 +2,18 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).ready ->
-  $("#more").addClass("invisible")
+togglize = (content_selector, toggle_selector, collapse_text) ->
+  $(content_selector).addClass("invisible")
 
-  $("#show_more_toggle").click ->
-    if("显示全部" == $(this).text())
+  $(toggle_selector).click ->
+    if(collapse_text == $(this).text())
       $(this).text("收起")
-      $("#more").removeClass("invisible")
+      $(content_selector).removeClass("invisible")
     else
-      $(this).text("显示全部")
-      $("#more").addClass("invisible")
+      $(this).text(collapse_text)
+      $(content_selector).addClass("invisible")
+
+$(document).ready ->
+  togglize("#more_books", "#show_more_books_toggle", "显示全部")
+  $(".book-read-users").each ->
+    togglize($(this).find(".read_users")[0], $(this).find(".show_read_users_toggle")[0], "点此查看谁读过")

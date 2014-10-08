@@ -9,19 +9,19 @@ def poll_from_douban_and_fill_in_db(user, douban_id)
     book = Book.find_by_book_id(raw_book["book_id"].to_i)
     if book.nil?
       book = Book.create({
-                        title: raw_book["book"]["title"],
-                        image: raw_book["book"]["image"],
-                        url: raw_book["book"]["alt"],
-                        book_id: raw_book["book_id"].to_i
-                        })
+                             title: raw_book["book"]["title"],
+                             image: raw_book["book"]["image"],
+                             url: raw_book["book"]["alt"],
+                             book_id: raw_book["book_id"].to_i
+                         })
     end
 
     read_record = ReadRecord.find_by_book_id_and_user_id(book.id, user.id)
     if read_record.nil?
       read_record = ReadRecord.create({
-                    status: raw_book["status"],
-                    rating: (not raw_book["rating"].nil? and not raw_book["rating"]["value"].nil?) ? raw_book["rating"]["value"].to_i : 0
-                  })
+                                          status: raw_book["status"],
+                                          rating: (not raw_book["rating"].nil? and not raw_book["rating"]["value"].nil?) ? raw_book["rating"]["value"].to_i : 0
+                                      })
     end
 
     read_record.user = user
@@ -31,9 +31,13 @@ def poll_from_douban_and_fill_in_db(user, douban_id)
 end
 
 task :poll_douban do
-  User.all.map do |user|
-    unless user.douban_auth_info.nil?
-      poll_from_douban_and_fill_in_db(user, user.douban_auth_info.douban_user_id)
+  user_ids = User.all.map(&:id)
+  user_ids.map do |user_id|
+    ::Thread.new do
+      user = User.find(user_id)
+      unless user.douban_auth_info.nil?
+        poll_from_douban_and_fill_in_db(user, user.douban_auth_info.douban_user_id)
+      end
     end
-  end
+  end.map(&:value)
 end

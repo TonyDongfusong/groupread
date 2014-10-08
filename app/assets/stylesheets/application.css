@@ -22,3 +22,28 @@
 .invisible {
     display: none;
 }
+
+.fix-logout {
+    margin-top: -6px;
+}
+
+.right-nav {
+    float: right;
+}
+
+.list a {
+    color: #3377aa;
+}
+
+html, body {
+    background-color: #e9e9e2;
+}
+
+.line {
+    margin-top: 10px;
+    border-color: #c5c5c5;
+    border-bottom-width: 1px;
+    border-style: solid;
+    height: 1px;
+    width: 100%;
+}

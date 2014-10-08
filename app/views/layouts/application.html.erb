@@ -2,27 +2,35 @@
 <html>
 <head>
   <title>Groupread</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
 
 <div class="container">
 
-<div class="header">
-  <span><%= link_to "团队阅读", root_path %></span>
-  <% if current_user.nil? %>
-	  <%= link_to "登陆", login_path %>
-  <% else %>
-	  <%= link_to "我的设置", setting_path %>
-	  <%= form_tag "/logout", class: "inline-form" do %>
-			<%= submit_tag "登出" %>
-	  <% end %>
-  <% end %>
-</div>
+  <nav class="navbar navbar-default" role="navigation">
+	<span class="navbar-brand"><%= link_to "团队阅读", root_path %></span>
+	<ul>
+	  <span class="right-nav">
+	  <% if current_user.nil? %>
+		  <span class="navbar-brand"><%= link_to "登陆", login_path, class: "btn btn-default navbar-btn fix-logout" %></span>
+	  <% else %>
 
-<%= yield %>
+			  <span class="navbar-brand"><%= link_to "我的设置", setting_path %></span>
+			  <span class="navbar-brand"><%= form_tag "/logout", class: "inline-form" do %>
+				  <%= submit_tag "登出", class: "btn btn-default navbar-btn fix-logout" %>
+			  <% end %>
+			  </span>
+
+	  <% end %>
+		  </span>
+	</ul>
+  </nav>
+
+  <%= yield %>
 
 </div>
 

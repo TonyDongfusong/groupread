@@ -1,33 +1,43 @@
 <p id="notice"><%= notice %></p>
 
-<div class="field">
-  组名：<%= @group.name %>
+
+<div class="container">
+  <div class="row">
+	<div class="group-desc">
+	  <span class="field-name">组名：</span>
+	  <span class="field-value"><%= @group.name %></span>
+	</div>
+
+	<div class="group-desc">
+	  <span class="field-name">描述：</span>
+	  <span class="field-value"><%= @group.description %></span>
+	</div>
+
+	<%= link_to '编辑', edit_group_path(@group), class: "btn btn-primary" %>
+
+	<% if @current_user_in_group %>
+		  <span>你已经加入该组，也许你想要</span>
+		  <%= form_tag "/leave_group", class: "inline-form" do %>
+			  <input name="id" value="<%= @group.id %>" hidden="hidden">
+			  <%= submit_tag "退出", class:"btn btn-danger" %>
+		  <% end %>
+		<div class="line"></div>
+		<h2>组员在读的书（总人数<%= @group.users.size %>）</h2>
+		<p class="read-prompt">对勾表示你已经读过本书啦：）</p>
+
+		<%= render partial: "books_info", locals: {book_infos: @book_infos.take(3)} %>
+
+		<% if @book_infos.size > 3 %>
+			<div><a class="show-all" id="show_more_books_toggle">显示全部</a></div>
+			<div id="more_books">
+			  <%= render partial: "books_info", locals: {book_infos: @book_infos.drop(3)} %>
+			</div>
+		<% end %>
+	<% else %>
+		<%= form_tag "/join_group" do %>
+			<input name="id" value="<%= @group.id %>" hidden="hidden">
+			<%= submit_tag "加入", class: "btn btn-primary" %>
+		<% end %>
+	<% end %>
+  </div>
 </div>
-<div class="field">
-  描述：<%= @group.description%>
-</div>
-
-<%= link_to 'Edit', edit_group_path(@group) %>
-
-<% if @current_user_in_group  %>
-	<div>你已经加入该组，也许你想要</div>
-	<%= form_tag "/leave_group" do %>
-		<input name="id" value="<%= @group.id %>" hidden="hidden">
-		<%= submit_tag "退出" %>
-	<% end %>
-	<h1>组员在读的书（总人数<%= @group.users.size %>）</h1>
-
-	<%= render partial: "books_info", locals: {book_infos: @book_infos.take(3)} %>
-
-	<% if @book_infos.size > 3 %>
-		<div><a class="show-all" id="show_more_toggle">显示全部</a></div>
-		<div id="more">
-		  <%= render partial: "books_info", locals: {book_infos: @book_infos.drop(3)} %>
-		</div>
-	<% end %>
-<% else %>
-	<%= form_tag "/join_group" do %>
-		<input name="id" value="<%= @group.id %>" hidden="hidden">
-		<%= submit_tag "加入" %>
-	<% end %>
-<% end %>
