@@ -14,8 +14,8 @@ Rails.application.routes.draw do
   post '/join_group' => 'groups#join'
   post '/leave_group' => 'groups#leave'
 
-  resources :users
-  resources :groups
+  resources :users, only: [:edit, :new, :create]
+  resources :groups, except: :index
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
