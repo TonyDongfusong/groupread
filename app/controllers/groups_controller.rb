@@ -1,5 +1,3 @@
-require 'reading_status_analyzer'
-
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :leave]
 

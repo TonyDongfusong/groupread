@@ -47,3 +47,7 @@ html, body {
     height: 1px;
     width: 100%;
 }
+
+.error-msg {
+    color: red;
+}

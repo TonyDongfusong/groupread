@@ -1,15 +1,17 @@
+<span class="error-msg"><%= @user.errors[:email].first if @user.errors[:email].present? %></span>
 <div class="field">
-  <span class="register-field"><%= f.label :email, "邮箱:"%></span>
+  <div><%= f.label :email, "邮箱:"%><span class="field-notes">（请使用正确的邮箱以便以后可以通过邮箱找回密码）</span></div>
   <%= f.text_field :email %>
 </div>
+
+<span class="error-msg"><%= @user.errors[:password].first if @user.errors[:password].present? %></span>
 <div class="field">
-  <span class="register-field">
-  <%= f.label :password, "密码:"%></span>
+  <div><%= f.label :password, "密码:"%><span class="field-notes">（6到40位字符）</span></div>
   <%= f.password_field :password %>
 </div>
+
+<span class="error-msg"><%= @user.errors[:password_confirmation].first if @user.errors[:password_confirmation].present? %></span>
 <div class="field">
-  <span class="register-field">
-  <%= f.label :repeated_password, "再次输入密码:"%>
-	</span>
-  <%= f.password_field :repeated_password %>
+  <div><%= f.label :password_confirmation, "再次输入密码:"%></div>
+  <%= f.password_field :password_confirmation %>
 </div>

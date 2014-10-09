@@ -7,9 +7,9 @@ class SessionController < ApplicationController
 	end
 
 	def create
-    user = User.find_by_email(params[:user][:email])
-    if user.password == params[:user][:password]
-      session[:current_user] = user.id
+    authenticated_user = User.authenticate(params[:user][:email], params[:user][:password])
+    if authenticated_user
+      session[:current_user] = authenticated_user.id
       redirect_to root_path
     else
       render :new

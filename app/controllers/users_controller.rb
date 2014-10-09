@@ -12,15 +12,15 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(params[:user].permit(:email, :password))
-    if !user.save
+    @user = User.new(params[:user].permit(:email, :password, :password_confirmation))
+    if !@user.save
       render :new
       return
     end
-    user.douban_auth_info = DoubanAuthInfo.find (session[:need_create_new_user]["auth_info_id"])
-    user.save
+    @user.douban_auth_info = DoubanAuthInfo.find (session[:need_create_new_user]["auth_info_id"])
+    @user.save
 
-    session[:current_user] = user.id
+    session[:current_user] = @user.id
     session[:need_create_new_user] = nil
 
     redirect_to root_path
@@ -38,7 +38,11 @@ class UsersController < ApplicationController
       return
     end
 
-    douban_auth_info = DoubanAuthInfo.find_or_create_by(auth_rsp[:auth_info])
+    douban_auth_info = DoubanAuthInfo.find_by_douban_user_id(auth_rsp[:auth_info]["douban_user_id"])
+    if douban_auth_info.nil?
+      douban_auth_info = DoubanAuthInfo.create(auth_rsp[:auth_info])
+    end
+
     if douban_auth_info.user.nil?
       session[:need_create_new_user] = {auth_info_id: douban_auth_info.id}
       redirect_to new_user_path
