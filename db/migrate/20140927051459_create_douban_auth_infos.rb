@@ -6,7 +6,9 @@ class CreateDoubanAuthInfos < ActiveRecord::Migration
       t.string :douban_user_id
       t.integer :expires_in
       t.string :refresh_token
-      t.integer :user_id
+      t.references :user
+      t.index(:douban_user_id, unique: true)
+      t.index(:douban_user_name, unique: true)
 
       t.timestamps
     end

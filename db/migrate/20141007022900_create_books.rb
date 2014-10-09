@@ -5,6 +5,9 @@ class CreateBooks < ActiveRecord::Migration
       t.string :title
       t.string :image
       t.string :url
+      t.index(:book_id, unique: true)
+      t.index(:image, unique: true)
+      t.index(:url, unique: true)
 
       t.timestamps
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007140941) do
+ActiveRecord::Schema.define(version: 20141007093745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,10 @@ ActiveRecord::Schema.define(version: 20141007140941) do
     t.datetime "updated_at"
   end
 
+  add_index "books", ["book_id"], name: "index_books_on_book_id", unique: true, using: :btree
+  add_index "books", ["image"], name: "index_books_on_image", unique: true, using: :btree
+  add_index "books", ["url"], name: "index_books_on_url", unique: true, using: :btree
+
   create_table "douban_auth_infos", force: true do |t|
     t.string   "access_token"
     t.string   "douban_user_name"
@@ -36,6 +40,9 @@ ActiveRecord::Schema.define(version: 20141007140941) do
     t.datetime "updated_at"
   end
 
+  add_index "douban_auth_infos", ["douban_user_id"], name: "index_douban_auth_infos_on_douban_user_id", unique: true, using: :btree
+  add_index "douban_auth_infos", ["douban_user_name"], name: "index_douban_auth_infos_on_douban_user_name", unique: true, using: :btree
+
   create_table "groups", force: true do |t|
     t.string   "name"
     t.string   "description"
@@ -43,10 +50,14 @@ ActiveRecord::Schema.define(version: 20141007140941) do
     t.datetime "updated_at"
   end
 
+  add_index "groups", ["name"], name: "index_groups_on_name", unique: true, using: :btree
+
   create_table "groups_users", id: false, force: true do |t|
     t.integer "group_id"
     t.integer "user_id"
   end
+
+  add_index "groups_users", ["group_id", "user_id"], name: "group_user_unique", unique: true, using: :btree
 
   create_table "read_records", force: true do |t|
     t.integer  "user_id"
@@ -57,14 +68,15 @@ ActiveRecord::Schema.define(version: 20141007140941) do
     t.datetime "updated_at"
   end
 
+  add_index "read_records", ["book_id", "user_id"], name: "book_user_unique", unique: true, using: :btree
+
   create_table "users", force: true do |t|
-    t.string   "name"
     t.string   "email"
     t.string   "password"
-    t.string   "douban_id"
-    t.string   "douban_email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
 end
