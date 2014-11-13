@@ -1,3 +1,4 @@
+gem "cucumber-pro", "0.0.17", :group => :test
 source 'https://www.rubygems.org/'
 
 ruby '2.1.1'
