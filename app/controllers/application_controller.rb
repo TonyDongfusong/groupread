@@ -21,4 +21,6 @@ class ApplicationController < ActionController::Base
       redirect_to new_user_path
     end
   end
+
+  
 end
